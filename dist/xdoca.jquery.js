@@ -11,14 +11,47 @@
 		
 		var positions = [];
 		
-		var renderBox = function(data,row,col,total_col, parent){
+		
+		
+		var getXPos = function(index,total,parentPos, parentTotal){
+			
+			if(parentPos == null){
+				console.log("its null");
+			}
+			
+			let parentWidth = tmp.width() / parentTotal;
+			let parentStart = parentPos - parentWidth/2;
+			let parentEnd = parentStart + parentWidth;
+			console.log(parentPos);
+			console.log(parentWidth);
+			console.log(parentStart);
+			console.log(parentEnd);
+			//return 200+parentStart + (parentWidth)/total * index;
+			let itsWidth = (parentWidth / (total+1) * (index+1));
+			let itsPos = parentStart + itsWidth;
+			return [itsPos, itsPos-(itsWidth/2)]
+		}
+		
+		var renderBox = function(allDatas, data,row,col,total_col, parent){
 					console.log(total_col," ",col);
+					let parentPos = positions.filter(x=>x.key == parent)[0];
+					let parentTotal = allDatas.filter(x=>x.parent==parent).length
 					
-					positions.push({key:data.key, x:col,y:row})
+					if(parentPos !== undefined){
+						parentPos = parentPos.x;
+					}else{
+						parentPos = tmp.width()/2;
+						parentTotal =1;
+					}
+					
+					
+					var itsPos = (getXPos(col, total_col, parentPos,parentTotal));
+					//console.log("thePos is "+itsPos)
+					positions.push({key:data.key, x:itsPos[0],y:row, ratio:total_col})
 					var tmptext = $("<div>");
-					tmptext.css("width", (100/total_col)+"%")
-					//tmptext.css("top", (10*row)+"%")
-					//tmptext.css("left", ((col+1)/(total_col/100))/2+"%")
+					//tmptext.css("width", (100/total_col)+"%")
+					tmptext.css("top", (10*row)+"%")
+					tmptext.css("left", itsPos[0] );
 					tmptext.append($("<b>").html(data.name));
 					tmp.append(tmptext);
 					if(col+1==total_col){
@@ -43,7 +76,7 @@
 				var row=0;
 				tmp2 = data.filter(x=>x.parent==parent);
 				findOrderIndex = tmp2.map(x=>x.key).indexOf(val.key);
-				renderBox(val, level, findOrderIndex, tmp2.length,parent);
+				renderBox(data, val, level, findOrderIndex, tmp2.length,parent);
 				
 				boxGen(data, (level+1), val.key);											
 			});	
