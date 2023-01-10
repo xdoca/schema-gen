@@ -1,0 +1,52 @@
+<script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+
+
+
+
+<div id="xdoca-schema"></div>
+
+
+<script src="../dist/xdoca.jquery.js"></script>
+
+<script>
+
+var data = [{key:"micheal", name:"Micheal Carlione", title:"boss", parent:null},
+{key:"fredo", name:"Fredo Carlione", title:"underboss", parent:"micheal"},
+{key:"thomas", name:"Thomas Hagen", title:"cons...", parent:"micheal"},
+{key:"thomas1", name:"Thomas's Son 1", title:"cons...", parent:"thomas"},
+{key:"thomas2", name:"Thomas's Son 2", title:"cons...", parent:"thomas"}
+
+];
+
+
+$(document).ready(function(){
+
+$("#xdoca-schema").schema({data:data});
+
+});
+
+
+</script>
+
+
+<style>
+#xdoca-schema{
+border:1px solid #000;
+width:500px;
+height:500px;
+position:relative;
+}
+
+#xdoca-schema div{
+float:left;
+text-align:center;
+height:50px;
+}
+/*
+
+width:100px;
+	margin-left:-50px;
+	
+	
+	position:absolute;*/
+</style>
